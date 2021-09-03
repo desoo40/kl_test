@@ -15,7 +15,7 @@ namespace kl_test // Note: actual namespace depends on the project name.
 
             string sURL;
             
-            var hash = "ac90ad929d7f5d6dd5c06809ac8613c9";
+            var hash = "B27CC938BE34A9455E567EEC0A27381A89D7C8348F8A721A6D167D34C53C4B4A";
 
             sURL = $"https://opentip.kaspersky.com/api/v1/search/hash?request={hash}";
 
@@ -24,8 +24,11 @@ namespace kl_test // Note: actual namespace depends on the project name.
             var wrGETURL = WebRequest.Create(sURL);
             wrGETURL.Headers.Add("x-api-key", token);
 
+
+            var resp = wrGETURL.GetResponse();
+
             Stream objStream;
-            objStream = wrGETURL.GetResponse().GetResponseStream();
+            objStream = resp.GetResponseStream();
 
             StreamReader objReader = new StreamReader(objStream);
 
