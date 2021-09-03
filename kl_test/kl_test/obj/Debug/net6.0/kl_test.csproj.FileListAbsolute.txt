@@ -1,0 +1,16 @@
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\kl_test.exe
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\kl_test.deps.json
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\kl_test.runtimeconfig.json
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\kl_test.dll
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\ref\kl_test.dll
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\kl_test.pdb
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.csproj.AssemblyReference.cache
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.GeneratedMSBuildEditorConfig.editorconfig
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.AssemblyInfoInputs.cache
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.AssemblyInfo.cs
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.ImplicitNamespaceImports.cs
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.csproj.CoreCompileInputs.cache
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.dll
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\ref\kl_test.dll
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.pdb
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.genruntimeconfig.cache
