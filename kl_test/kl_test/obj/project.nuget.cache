@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "xqwnLJ/rUNbQkXPK5pA0/tMaNGVfKmvrLIBsl1xr+6/aCyPAo83LMDljZdUwcX1T3t90DyslnbGF+vynY8wXFQ==",
+  "dgSpecHash": "JDFjDjEPvwFIyNAG3Ry2qOyhZ8o/+9XMPLdvGCfnbJ7BC768wesFuYwoGeuKSbHtCNNpUgpc5UE146kwrm/1Bg==",
   "success": true,
   "projectFilePath": "D:\\Progs\\git\\kl_test\\kl_test\\kl_test\\kl_test.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\deso4\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
