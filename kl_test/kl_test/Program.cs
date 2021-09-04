@@ -11,6 +11,25 @@ namespace kl_test // Note: actual namespace depends on the project name.
 {
     public class Program
     {
+        public class FileInfo
+        {
+            public string Zone;
+
+            public struct FileGeneralInfo
+            {
+                public string FileStatus;
+                public string Sha1;
+                public string Md5;
+                public string Sha256;
+                public string FirstSeen;
+                public string LastSeen;
+                public string Signer;
+                public int Size;
+                public string Type;
+                public int HitsCount;
+            }
+        }
+
         public static async void WebReq(string url, string token)
         {
             try
@@ -32,7 +51,7 @@ namespace kl_test // Note: actual namespace depends on the project name.
                         {
                             var jsonResponse = sr.ReadToEnd();
 
-                            JsonConvert.DeserializeObject(jsonResponse);
+                            var inf = JsonConvert.DeserializeObject<FileInfo>(jsonResponse);
 
                             Console.WriteLine(jsonResponse);
                         }
@@ -42,14 +61,13 @@ namespace kl_test // Note: actual namespace depends on the project name.
             catch (WebException ex)
             {
                 Console.WriteLine(ex.ToString());
-                
             }
         }
 
         public static async Task Main(string[] args)
         {
             var token = "iTlZ104fQ+WofNbYc/EiEg==";
-            var hash = "65a3af8c01a1cc779503118bfbf6ae5b";
+            var hash = "ac90ad929d7f5d6dd5c06809ac8613c9";
             var sURL = $"https://opentip.kaspersky.com/api/v1/search/hash?request={hash}";
 
             WebReq(sURL, token);

@@ -13,3 +13,5 @@ D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.dll
 D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\ref\kl_test.dll
 D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.pdb
 D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.genruntimeconfig.cache
+D:\Progs\git\kl_test\kl_test\kl_test\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\Progs\git\kl_test\kl_test\kl_test\obj\Debug\net6.0\kl_test.csproj.AssemblyReference.cache
