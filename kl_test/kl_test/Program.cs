@@ -25,26 +25,6 @@ namespace kl_test // Note: actual namespace depends on the project name.
         const string sURL = $"https://opentip.kaspersky.com/api/v1/search/hash?request=";
 
 
-        public class FileInfo
-        {
-            public string Zone;
-            public GeneralInfo FileGeneralInfo;
-
-            public class GeneralInfo
-            {
-                public string FileStatus;
-                public string Sha1;
-                public string Md5;
-                public string Sha256;
-                public string FirstSeen;
-                public string LastSeen;
-                public string Signer;
-                public int Size;
-                public string Type;
-                public int HitsCount;            
-            }
-        }
-
         public static string WebReq(string url, string token)
         {
             try
@@ -58,18 +38,10 @@ namespace kl_test // Note: actual namespace depends on the project name.
 
                     var response = (HttpWebResponse)webRequest.GetResponse();
 
-                    using (Stream s = response.GetResponseStream())
-                    {
-                        using (StreamReader sr = new StreamReader(s))
-                        {
-                            var jsonResponse = sr.ReadToEnd();
+                    using Stream s = response.GetResponseStream();
+                    using StreamReader sr = new StreamReader(s);
+                    return sr.ReadToEnd();
 
-                            var inf = JsonConvert.DeserializeObject<FileInfo>(jsonResponse);
-                            Console.WriteLine(jsonResponse);
-
-                            return jsonResponse;
-                        }
-                    }
                 }
             }
             catch (WebException ex)
@@ -104,6 +76,8 @@ namespace kl_test // Note: actual namespace depends on the project name.
             var firstReq = WebReq(sURL + validHashMd5, validToken);
             var secondReq = WebReq(sURL + validHashMd5, validToken);
 
+            Console.WriteLine(firstReq);
+                
             Debug.Assert(firstReq == secondReq, "Checking for same answer with same hash");
         }
 
