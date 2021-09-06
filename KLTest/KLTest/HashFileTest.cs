@@ -28,8 +28,9 @@ namespace KLTest
 
                 var response = (HttpWebResponse)webRequest.GetResponse();
 
-                using Stream s = response.GetResponseStream();
-                using StreamReader sr = new StreamReader(s);
+                using var s = response.GetResponseStream();
+                using var sr = new StreamReader(s);
+
                 return sr.ReadToEnd();
             }
             catch (WebException ex)
@@ -42,62 +43,109 @@ namespace KLTest
                 Console.WriteLine(ex.ToString());
                 throw;
             }
-
-            return "";
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenMd5()
         {
             var req = WebReq(sURL + validHashMd5, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
+            
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Md5 hash wrong response");
+                Assert.IsTrue(info.AllFieldsNotNull(), "Md5 hash wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenMd5_0x()
         {
             var req = WebReq(sURL + Ox + validHashMd5, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Md5 hash with 0x prefix wrong response");
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+                Assert.IsTrue(info.AllFieldsNotNull(), "Md5 hash with 0x prefix wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenSha1()
         {
             var req = WebReq(sURL + validHashSha1, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Sha1 hash wrong response");
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+                Assert.IsTrue(info.AllFieldsNotNull(), "Sha1 hash wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenSha1_0x()
         {
             var req = WebReq(sURL + Ox + validHashSha1, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
+            
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Sha1 hash with 0x prefix wrong response");
+                Assert.IsTrue(info.AllFieldsNotNull(), "Sha1 hash with 0x prefix wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenSha256()
         {
             var req = WebReq(sURL + validHashSha256, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Sha256 hash wrong response");
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+                Assert.IsTrue(info.AllFieldsNotNull(), "Sha256 hash wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
         public void CheckCorrectHashTokenSha256_0x()
         {
             var req = WebReq(sURL + Ox + validHashSha256, validToken);
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Sha256 hash with 0x prefix wrong response");
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+                Assert.IsTrue(info.AllFieldsNotNull(), "Sha256 hash with 0x prefix wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
@@ -106,7 +154,11 @@ namespace KLTest
             var firstReq = WebReq(sURL + validHashMd5, validToken);
             var secondReq = WebReq(sURL + validHashMd5, validToken);
 
-            Assert.AreEqual(firstReq, secondReq, "One request repeated two times gives different response");
+            Assert.AreEqual(
+                firstReq,
+                secondReq,
+                "One request repeated two times gives different response"
+            );
         }
 
         [TestMethod]
@@ -127,9 +179,17 @@ namespace KLTest
             var lowerHash = validHashMd5.ToLower();
             var req = WebReq(sURL + lowerHash, validToken);
 
-            var info = JsonConvert.DeserializeObject<FileInfo>(req);
+            try
+            {
+                var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-            Assert.IsTrue(info.AllFieldsNotNull(), "Hash in lower case gives wrong response");
+                Assert.IsTrue(info.AllFieldsNotNull(), "Hash in lower case gives wrong response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
         }
 
         [TestMethod]
@@ -140,7 +200,11 @@ namespace KLTest
             var upperReq = WebReq(sURL + validHashMd5, validToken);
             var lowerReq = WebReq(sURL + lowerHash, validToken);
 
-            Assert.AreEqual(upperReq, lowerReq, "Same hash in lower and upper cases gives different response");
+            Assert.AreEqual(
+                upperReq,
+                lowerReq,
+                "Same hash in lower and upper cases gives different response"
+            );
         }
 
         [TestMethod]
