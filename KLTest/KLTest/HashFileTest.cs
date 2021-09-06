@@ -1,25 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.IO;
 using System.Net;
-using System.Diagnostics;
-using System.Configuration;
 using Newtonsoft.Json;
 
 namespace KLTest;
 
-
 [TestClass]
 public class HashFileTest
 {
-    const string revokedToken = "iTlZ104fQ+WofNbYc/EiEg==";
-    const string expiredToken = "9eXC2xJ8REyxkQUEm6iOXg=="; // till 5.09.2021
     const string validToken = "KudEmW89SC6U2Nc9/1Sd7g==";
-    const string invalidLengtToken = "/cprfmOkT4emoi4rvpjBBA===";
-    const string invalidCharsToken = "/+3424kl234,,,,2342l";
+
 
     const string validHashMd5 = "ac90ad929d7f5d6dd5c06809ac8613c9";
     const string validHashSha1 = "BD8BBD7F603CF8B51097C0E416FBBE14F561A994";
@@ -56,7 +45,7 @@ public class HashFileTest
     }
 
     [TestMethod]
-    public void CheckCorrectHashToken()
+    public void CheckCorrectHashTokenMd5()
     {
         var req = WebReq(sURL + validHashMd5, validToken);
         var info = JsonConvert.DeserializeObject<FileInfo>(req);
@@ -65,55 +54,21 @@ public class HashFileTest
     }
 
     [TestMethod]
-    public void ExpiredToken()
+    public void CheckCorrectHashTokenSha1()
     {
-        try
-        {
-            var req = WebReq(sURL + validHashMd5, expiredToken);
-        }
-        catch(WebException ex)
-        {
-            Assert.IsTrue(ex.Message.Contains("401"));
-        }
+        var req = WebReq(sURL + validHashSha1, validToken);
+        var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+        Assert.IsTrue(info.AllFieldsNotNull());
     }
 
     [TestMethod]
-    public void RevokeToken()
+    public void CheckCorrectHashTokenSha256()
     {
-        try
-        {
-            var req = WebReq(sURL + validHashMd5, revokedToken);
-        }
-        catch (WebException ex)
-        {
-            Assert.IsTrue(ex.Message.Contains("401"));
-        }
-    }
+        var req = WebReq(sURL + validHashSha256, validToken);
+        var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
-    [TestMethod]
-    public void IncorrectLenghtToken()
-    {
-        try
-        {
-            var req = WebReq(sURL + validHashMd5, invalidLengtToken);
-        }
-        catch (WebException ex)
-        {
-            Assert.IsTrue(ex.Message.Contains("400"));
-        }
-    }
-
-    [TestMethod]
-    public void IncorrectCharactersToken()
-    {
-        try
-        {
-            var req = WebReq(sURL + validHashMd5, invalidCharsToken);
-        }
-        catch (WebException ex)
-        {
-            Assert.IsTrue(ex.Message.Contains("400"));
-        }
+        Assert.IsTrue(info.AllFieldsNotNull());
     }
 
     [TestMethod]
@@ -135,5 +90,78 @@ public class HashFileTest
         Assert.AreEqual(firstReq, secondReq, "Md5 response doesn't match sha1 response");
         Assert.AreEqual(secondReq, thirdReq, "sha1 response doesn't match sha256 response");
         Assert.AreEqual(firstReq, thirdReq, "Md5 response doesn't match sha256 response");
+    }
+    
+    [TestMethod]
+    public void ExpiredToken()
+    {
+        var expiredToken = "9eXC2xJ8REyxkQUEm6iOXg=="; // till 5.09.2021
+        try
+        {
+            var req = WebReq(sURL + validHashMd5, expiredToken);
+        }
+        catch (WebException ex)
+        {
+            Assert.IsTrue(ex.Message.Contains("401"));
+        }
+    }
+
+    [TestMethod]
+    public void RevokeToken()
+    {
+        var revokedToken = "iTlZ104fQ+WofNbYc/EiEg==";
+        try
+        {
+            var req = WebReq(sURL + validHashMd5, revokedToken);
+        }
+        catch (WebException ex)
+        {
+            Assert.IsTrue(ex.Message.Contains("401"));
+        }
+    }
+
+    [TestMethod]
+    public void IncorrectLenghtToken()
+    {
+        var invalidLengtToken = "/cprfmOkT4emoi4rvpjBBA===";
+
+        try
+        {
+            var req = WebReq(sURL + validHashMd5, invalidLengtToken);
+        }
+        catch (WebException ex)
+        {
+            Assert.IsTrue(ex.Message.Contains("400"));
+        }
+    }
+
+    [TestMethod]
+    public void IncorrectCharactersToken()
+    {
+        var invalidCharsToken = "/+3424LL34,,,,2342l";
+
+        try
+        {
+            var req = WebReq(sURL + validHashMd5, invalidCharsToken);
+        }
+        catch (WebException ex)
+        {
+            Assert.IsTrue(ex.Message.Contains("400"));
+        }
+    }
+
+    [TestMethod]
+    public void UnknownToken()
+    {
+        var unknownToken = "LudEmW89SC6U2Nc9/1Sd7g==";
+
+        try
+        {
+            var req = WebReq(sURL + validHashMd5, unknownToken);
+        }
+        catch (WebException ex)
+        {
+            Assert.IsTrue(ex.Message.Contains("401"));
+        }
     }
 }
