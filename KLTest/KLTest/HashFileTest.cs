@@ -8,9 +8,8 @@ namespace KLTest;
 public class HashFileTest
 {
     const string validToken = "KudEmW89SC6U2Nc9/1Sd7g==";
-
-
-    const string validHashMd5 = "ac90ad929d7f5d6dd5c06809ac8613c9";
+    const string Ox = "0x";
+    const string validHashMd5 = "AC90AD929D7F5D6DD5C06809AC8613C9";
     const string validHashSha1 = "BD8BBD7F603CF8B51097C0E416FBBE14F561A994";
     const string validHashSha256 = "B27CC938BE34A9455E567EEC0A27381A89D7C8348F8A721A6D167D34C53C4B4A";
 
@@ -48,6 +47,15 @@ public class HashFileTest
     public void CheckCorrectHashTokenMd5()
     {
         var req = WebReq(sURL + validHashMd5, validToken);
+        var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+        Assert.IsTrue(info.AllFieldsNotNull());
+    }
+    
+    [TestMethod]
+    public void CheckCorrectHashTokenMd5_0x()
+    {
+        var req = WebReq(sURL + "0x" + validHashMd5, validToken);
         var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
         Assert.IsTrue(info.AllFieldsNotNull());
