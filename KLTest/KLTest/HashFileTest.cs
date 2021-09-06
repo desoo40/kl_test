@@ -71,9 +71,27 @@ public class HashFileTest
     }
 
     [TestMethod]
+    public void CheckCorrectHashTokenSha1_0x()
+    {
+        var req = WebReq(sURL + Ox + validHashSha1, validToken);
+        var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+        Assert.IsTrue(info.AllFieldsNotNull());
+    }
+
+    [TestMethod]
     public void CheckCorrectHashTokenSha256()
     {
         var req = WebReq(sURL + validHashSha256, validToken);
+        var info = JsonConvert.DeserializeObject<FileInfo>(req);
+
+        Assert.IsTrue(info.AllFieldsNotNull());
+    }
+
+    [TestMethod]
+    public void CheckCorrectHashTokenSha256_0x()
+    {
+        var req = WebReq(sURL + Ox + validHashSha256, validToken);
         var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
         Assert.IsTrue(info.AllFieldsNotNull());
