@@ -10,7 +10,7 @@ namespace KLTest
     [TestClass]
     public class HashFileTest
     {
-        const string validToken = "MsZ03CyuQWiIk+LQEW017w==";
+        string validToken = Environment.GetEnvironmentVariable("KLToken");
         const string Ox = "0x";
         const string validHashMd5 = "AC90AD929D7F5D6DD5C06809AC8613C9";
         const string validHashSha1 = "BD8BBD7F603CF8B51097C0E416FBBE14F561A994";
