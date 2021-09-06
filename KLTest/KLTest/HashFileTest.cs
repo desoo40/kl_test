@@ -9,7 +9,7 @@ namespace KLTest
     [TestClass]
     public class HashFileTest
     {
-        const string validToken = "KudEmW89SC6U2Nc9/1Sd7g==";
+        const string validToken = "gMJUS2SoSPaxEww8mPOY+A==";
         const string Ox = "0x";
         const string validHashMd5 = "AC90AD929D7F5D6DD5C06809AC8613C9";
         const string validHashSha1 = "BD8BBD7F603CF8B51097C0E416FBBE14F561A994";
@@ -23,23 +23,24 @@ namespace KLTest
             {
                 var webRequest = WebRequest.Create(url);
 
-                if (webRequest != null)
-                {
-                    webRequest.Method = "GET";
-                    webRequest.Headers.Add("x-api-key", token);
+                webRequest.Method = "GET";
+                webRequest.Headers.Add("x-api-key", token);
 
-                    var response = (HttpWebResponse)webRequest.GetResponse();
+                var response = (HttpWebResponse)webRequest.GetResponse();
 
-                    using Stream s = response.GetResponseStream();
-                    using StreamReader sr = new StreamReader(s);
-                    return sr.ReadToEnd();
-
-                }
+                using Stream s = response.GetResponseStream();
+                using StreamReader sr = new StreamReader(s);
+                return sr.ReadToEnd();
             }
             catch (WebException ex)
             {
                 Console.WriteLine(ex.ToString());
-                throw ex;
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
             }
 
             return "";
@@ -156,8 +157,10 @@ namespace KLTest
             {
                 Assert.IsTrue(
                     ex.Message.Contains("400"),
-                    $"Cought web exception, but not 400 \n + {errorMes}"
+                    $"Cought web exception, but not 400 \n {errorMes}"
                 );
+
+                return;
             }
             catch (Exception ex)
             {
@@ -181,8 +184,10 @@ namespace KLTest
             {
                 Assert.IsTrue(
                     ex.Message.Contains("400"),
-                     $"Cought web exception, but not 400 \n + {errorMes}"
+                     $"Cought web exception, but not 400 \n {errorMes}"
                 );
+
+                return;
             }
             catch (Exception ex)
             {
@@ -206,73 +211,132 @@ namespace KLTest
             {
                 Assert.IsTrue(
                     ex.Message.Contains("400"),
-                    $"Cought web exception, but not 400 \n + {errorMes}"
+                    $"Cought web exception, but not 400 \n {errorMes}"
                 );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void UnknownHash()
         {
             var unknownHash = "229d33b2d0d7d50441feb476a88d1373";
-            ;
+            var errorMes = "Unknown by app file hash doesn't give 400 (Bad Request) error";
+
             try
             {
                 WebReq(sURL + unknownHash, validToken);
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void IncorrectCharactersHash()
         {
             var incorrectCharsHash = "AZ90AG929D7F5D6DD5C06809AC8XXYY";
-            ;
+            var errorMes = "Hash with incorrect chars doesn't give 400 (Bad Request) error";
+
             try
             {
                 WebReq(sURL + incorrectCharsHash, validToken);
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void ExpiredToken()
         {
             var expiredToken = "9eXC2xJ8REyxkQUEm6iOXg=="; // till 5.09.2021
+            var errorMes = "Expiered token doesn't give 401 (Unautorized) error";
+
             try
             {
                 WebReq(sURL + validHashMd5, expiredToken);
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("401"));
+                Assert.IsTrue(
+                    ex.Message.Contains("401"),
+                    $"Cought web exception, but not 401 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void RevokeToken()
         {
             var revokedToken = "iTlZ104fQ+WofNbYc/EiEg==";
+            var errorMes = "Revoked token doesn't give 401 (Unautorized) error";
+
             try
             {
                 WebReq(sURL + validHashMd5, revokedToken);
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("401"));
+                Assert.IsTrue(
+                    ex.Message.Contains("401"),
+                    $"Cought web exception, but not 401 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void IncorrectLenghtToken()
         {
             var invalidLengtToken = "/cprfmOkT4emoi4rvpjBBA===";
+            var errorMes = "Incorrect lenght token doesn't give 400 (Bad request) error";
 
             try
             {
@@ -280,14 +344,26 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void IncorrectCharactersToken()
         {
             var invalidCharsToken = "/+3424LL34,,,,2342l";
+            var errorMes = "Incorrect chars token doesn't give 400 (Bad request) error";
 
             try
             {
@@ -295,14 +371,26 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void UnknownToken()
         {
             var unknownToken = "LudEmW89SC6U2Nc9/1Sd7g==";
+            var errorMes = "Unknonw token doesn't give 401 (Unautorized) error";
 
             try
             {
@@ -310,14 +398,26 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("401"));
+                Assert.IsTrue(
+                    ex.Message.Contains("401"),
+                    $"Cought web exception, but not 401 \n {errorMes}"
+                );
+
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void EmptyStringToken()
         {
             var emptyToken = "";
+            var errorMes = "Unknonw token doesn't give 401 (Unautorized) error";
 
             try
             {
@@ -325,8 +425,18 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("401"));
+                Assert.IsTrue(
+                    ex.Message.Contains("401"),
+                    $"Cought web exception, but not 401 \n {errorMes}"
+                );
+                return;
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
 
         }
     }

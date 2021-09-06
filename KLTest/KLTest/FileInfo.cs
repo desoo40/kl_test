@@ -2,20 +2,20 @@
 {
     public class FileInfo
     {
-        public string Zone;
-        public GeneralInfo FileGeneralInfo;
+        public string? Zone;
+        public GeneralInfo? FileGeneralInfo;
 
         public class GeneralInfo
         {
-            public string FileStatus;
-            public string Sha1;
-            public string Md5;
-            public string Sha256;
-            public string FirstSeen;
-            public string LastSeen;
-            public string Signer;
+            public string? FileStatus;
+            public string? Sha1;
+            public string? Md5;
+            public string? Sha256;
+            public string? FirstSeen;
+            public string? LastSeen;
+            public string? Signer;
             public int? Size;
-            public string Type;
+            public string? Type;
             public int? HitsCount;
         }
 
