@@ -145,7 +145,8 @@ namespace KLTest
         [TestMethod]
         public void IncorrectLenghtHash()
         {
-            var incorrectLenght = validToken + "extra";
+            var incorrectLenght = validHashMd5 + "extra";
+            var errorMes = "Hash with incorrect lenght doesn't give 400 (Bad Request) error";
 
             try
             {
@@ -153,14 +154,24 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n + {errorMes}"
+                );
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void EmptyStringHash()
         {
             var emptyStringHash = "";
+            var errorMes = "Empty string hash doesn't give 400 (Bad Request) error";
 
             try
             {
@@ -168,14 +179,24 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                     $"Cought web exception, but not 400 \n + {errorMes}"
+                );
             }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
+
+            Assert.Fail(errorMes);
         }
 
         [TestMethod]
         public void EmptyFileHash()
         {
             var emptyFileHash = "D41D8CD98F00B204E9800998ECF8427E";
+            var errorMes = "Empty file hash doesn't give 400 (Bad Request) error";
 
             try
             {
@@ -183,7 +204,10 @@ namespace KLTest
             }
             catch (WebException ex)
             {
-                Assert.IsTrue(ex.Message.Contains("400"));
+                Assert.IsTrue(
+                    ex.Message.Contains("400"),
+                    $"Cought web exception, but not 400 \n + {errorMes}"
+                );
             }
         }
 
