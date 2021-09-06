@@ -55,7 +55,7 @@ public class HashFileTest
     [TestMethod]
     public void CheckCorrectHashTokenMd5_0x()
     {
-        var req = WebReq(sURL + "0x" + validHashMd5, validToken);
+        var req = WebReq(sURL + Ox + validHashMd5, validToken);
         var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
         Assert.IsTrue(info.AllFieldsNotNull());
