@@ -75,9 +75,9 @@ namespace KLTest
             Assert.Fail(errMes);
         }
 
-        public void AssertIsTrueChecker(string token, string hash, string errMes)
+        public void AssertIsTrueChecker(string hash, string token, string errMes)
         {
-            var req = WebReq(sURL + validHashMd5, validToken);
+            var req = WebReq(sURL + hash, token);
 
             try
             {
