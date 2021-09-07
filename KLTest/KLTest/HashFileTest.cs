@@ -41,11 +41,6 @@ namespace KLTest
 
                 return sr.ReadToEnd();
             }
-            catch (WebException ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
@@ -53,7 +48,7 @@ namespace KLTest
             }
         }
 
-        public void AssertExeptionCatcher(string token, string hash, string errCode, string errMes)
+        public void AssertWebExeptionCatcher(string token, string hash, string errCode, string errMes)
         {
             try
             {
@@ -75,7 +70,7 @@ namespace KLTest
             Assert.Fail(errMes);
         }
 
-        public void AssertIsTrueChecker(string hash, string token, string errMes)
+        public void AssertIsJSONResponse(string hash, string token, string errMes)
         {
             var req = WebReq(sURL + hash, token);
 
@@ -99,7 +94,7 @@ namespace KLTest
        [TestMethod]
         public void CheckCorrectHashTokenMd5()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                 validHashMd5,
                 validToken,
                 "Md5 hash wrong response"
@@ -109,7 +104,7 @@ namespace KLTest
         [TestMethod]
         public void CheckCorrectHashTokenMd5_0x()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                Ox + validHashMd5,
                validToken,
                "Md5 hash with 0x prefix wrong response"
@@ -119,7 +114,7 @@ namespace KLTest
         [TestMethod]
         public void CheckCorrectHashTokenSha1()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                validHashSha1,
                validToken,
                "Sha1 hash wrong response"
@@ -129,7 +124,7 @@ namespace KLTest
         [TestMethod]
         public void CheckCorrectHashTokenSha1_0x()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                Ox + validHashSha1,
                validToken,
                "Sha1 hash with 0x prefix wrong response"
@@ -139,7 +134,7 @@ namespace KLTest
         [TestMethod]
         public void CheckCorrectHashTokenSha256()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                validHashSha256,
                validToken,
                "Sha256 hash wrong response"
@@ -149,7 +144,7 @@ namespace KLTest
         [TestMethod]
         public void CheckCorrectHashTokenSha256_0x()
         {
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                Ox + validHashSha256,
                validToken,
                "Sha256 hash with 0x prefix wrong response"
@@ -186,7 +181,7 @@ namespace KLTest
         {
             var lowerHash = validHashMd5.ToLower();
 
-            AssertIsTrueChecker(
+            AssertIsJSONResponse(
                lowerHash,
                validToken,
                "Hash in lower case gives wrong response"
@@ -213,7 +208,7 @@ namespace KLTest
         {
             var incorrectLenght = validHashMd5 + "extra";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                   validToken,
                   incorrectLenght,
                   badRequestErrCode,
@@ -230,7 +225,7 @@ namespace KLTest
         {
             var emptyStringHash = "";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                   validToken,
                   emptyStringHash,
                   badRequestErrCode,
@@ -247,7 +242,7 @@ namespace KLTest
         {
             var emptyFileHash = "D41D8CD98F00B204E9800998ECF8427E";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                  validToken,
                  emptyFileHash,
                  badRequestErrCode,
@@ -264,7 +259,7 @@ namespace KLTest
         {
             var unknownHash = "229d33b2d0d7d50441feb476a88d1373";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 validToken,
                 unknownHash,
                 badRequestErrCode,
@@ -281,7 +276,7 @@ namespace KLTest
         {
             var incorrectCharsHash = "AZ90AG929D7F5D6DD5C06809AC8XXYY";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 validToken,
                 incorrectCharsHash,
                 badRequestErrCode,
@@ -299,7 +294,7 @@ namespace KLTest
         {
             var expiredToken = "9eXC2xJ8REyxkQUEm6iOXg=="; // till 5.09.2021
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 expiredToken,
                 validHashMd5,
                 unauthorizedtErrCode,
@@ -316,7 +311,7 @@ namespace KLTest
         {
             var revokedToken = "iTlZ104fQ+WofNbYc/EiEg==";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                  revokedToken,
                  validHashMd5,
                  unauthorizedtErrCode,
@@ -333,7 +328,7 @@ namespace KLTest
         {
             var unknownToken = "LudEmW89SC6U2Nc9/1Sd7g==";
             
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 unknownToken,
                 validHashMd5,
                 unauthorizedtErrCode,
@@ -350,7 +345,7 @@ namespace KLTest
         {
             var invalidLengtToken = "/cprfmOkT4emoi4rvpjBBA===";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 invalidLengtToken,
                 validHashMd5,
                 badRequestErrCode,
@@ -367,7 +362,7 @@ namespace KLTest
         {
             var emptyStringToken = "";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 emptyStringToken,
                 validHashMd5,
                 badRequestErrCode,
@@ -384,7 +379,7 @@ namespace KLTest
         {
             var invalidCharsToken = "/+3424LL34,,,,2342l";
 
-            AssertExeptionCatcher(
+            AssertWebExeptionCatcher(
                 invalidCharsToken,
                 validHashMd5,
                 badRequestErrCode,
