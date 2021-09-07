@@ -27,25 +27,17 @@ namespace KLTest
 
         public static string WebReq(string url, string token)
         {
-            try
-            {
-                var webRequest = WebRequest.Create(url);
+            var webRequest = WebRequest.Create(url);
 
-                webRequest.Method = "GET";
-                webRequest.Headers.Add("x-api-key", token);
+            webRequest.Method = "GET";
+            webRequest.Headers.Add("x-api-key", token);
 
-                var response = (HttpWebResponse)webRequest.GetResponse();
+            var response = (HttpWebResponse)webRequest.GetResponse();
 
-                using var s = response.GetResponseStream();
-                using var sr = new StreamReader(s);
+            using var s = response.GetResponseStream();
+            using var sr = new StreamReader(s);
 
-                return sr.ReadToEnd();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                throw;
-            }
+            return sr.ReadToEnd();
         }
 
         public void AssertWebExeptionCatcher(string token, string hash, string errCode, string errMes)
@@ -72,10 +64,9 @@ namespace KLTest
 
         public void AssertIsJSONResponse(string hash, string token, string errMes)
         {
-            var req = WebReq(sURL + hash, token);
-
             try
             {
+                var req = WebReq(sURL + hash, token);
                 var info = JsonConvert.DeserializeObject<FileInfo>(req);
 
                 Assert.IsTrue(info.AllFieldsNotNull(), errMes);
@@ -154,26 +145,40 @@ namespace KLTest
         [TestMethod]
         public void TwoReapetedRequestsWithOneHash()
         {
-            var firstReq = WebReq(sURL + validHashMd5, validToken);
-            var secondReq = WebReq(sURL + validHashMd5, validToken);
+            try
+            {
+                var firstReq = WebReq(sURL + validHashMd5, validToken);
+                var secondReq = WebReq(sURL + validHashMd5, validToken);
 
-            Assert.AreEqual(
-                firstReq,
-                secondReq,
-                "One request repeated two times gives different response"
-            );
+                Assert.AreEqual(
+                    firstReq,
+                    secondReq,
+                    "One request repeated two times gives different response"
+                );
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
         public void CheckThreeHashsGiveSameAnswer()
         {
-            var firstReq = WebReq(sURL + validHashMd5, validToken);
-            var secondReq = WebReq(sURL + validHashSha1, validToken);
-            var thirdReq = WebReq(sURL + validHashSha256, validToken);
+            try
+            {
+                var firstReq = WebReq(sURL + validHashMd5, validToken);
+                var secondReq = WebReq(sURL + validHashSha1, validToken);
+                var thirdReq = WebReq(sURL + validHashSha256, validToken);
 
-            Assert.AreEqual(firstReq, secondReq, "Md5 response doesn't match sha1 response");
-            Assert.AreEqual(secondReq, thirdReq, "sha1 response doesn't match sha256 response");
-            Assert.AreEqual(firstReq, thirdReq, "Md5 response doesn't match sha256 response");
+                Assert.AreEqual(firstReq, secondReq, "Md5 response doesn't match sha1 response");
+                Assert.AreEqual(secondReq, thirdReq, "sha1 response doesn't match sha256 response");
+                Assert.AreEqual(firstReq, thirdReq, "Md5 response doesn't match sha256 response");
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.Message);
+            }
         }
 
         [TestMethod]
